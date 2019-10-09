@@ -12,6 +12,14 @@ CSV-file(s) on a repo, clouddrive or server and use it across teams.
 
     $ curl -LO "https://raw.githubusercontent.com/coderofsalvation/kanban.bash/master/kanban"
     $ chmod 755 kanban
+
+Or if you've cloned the repo
+
+    # Install to /usr/local/bin by default
+    # Setup an alias of `kanban` to `k` in `~/.bashrc` with KANBANFILE and KANBANCONF in the CWD
+    $ make install
+    # Install to $DESTDIR/bin instead
+    $ make install DESTDIR=/home/user
   
 ## Show me the kanban board!
 
