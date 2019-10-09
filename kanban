@@ -50,7 +50,6 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 BOX=(┌ ─ ┐ └ ┘ │ ┤ ┴ ┬ ├ ┼)
 BAR=(▁ ▂ ▃ ▄ ▅ ▆ ▆ ▇ ▇ '█' '█')
-TMP=~/.kanban.tmp
 locale | grep -q "UTF-8" && UTF8=1
 X=$(tput cols)    # get size of terminal window
 Y=$(tput lines)   # 
@@ -68,6 +67,7 @@ if [[ ! -n "${KANBANFILE}" ]]; then
   [[ ! -n "${KANBANFILE}" ]] && KANBANFILE=~/".kanban.csv";
 fi
 [[ ! -f "${KANBANFILE}" ]] && echo '"status","tag","description","history","date"' > "${KANBANFILE}"
+TMP="${KANBANFILE}".tmp
 
 # kanban config file
 # Please note that the escaped quotes
@@ -230,7 +230,7 @@ update_item_status(){
     newitem="${newitem/$flags/$newflags}"
     newitem="${newitem/$dates/$newdates}"
     KANBANITEMS="$(<$KANBANFILE)"
-    echo "${KANBANITEMS//"$item"/"$newitem"}" > "${KANBANFILE}"
+    echo "${KANBANITEMS//$item/$newitem}" > "${KANBANFILE}"
     echo "$status -> $2"
   fi
 }
@@ -245,8 +245,8 @@ update_item(){
 '"$item" > "${TMP}".update
   ${EDITOR} "${TMP}".update
   KANBANITEMS="$(<$KANBANFILE)"
-  newitem="$(cat "${TMP}".update | tail -n1 )" 
-  echo "${KANBANITEMS//"$item"/"$newitem"}" > "${KANBANFILE}"
+  newitem="$(cat "${TMP}".update | tail -n1 )"
+  echo "${KANBANITEMS//"$item"/$newitem}" > "${KANBANFILE}"
   echo "updated item $1"
 }
 
